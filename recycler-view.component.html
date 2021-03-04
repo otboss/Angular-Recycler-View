@@ -1,0 +1,25 @@
+<section (scroll)="fetchItems($event.target)">
+
+  <ion-refresher slot="fixed" (ionRefresh)="reset($event.target)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="loading-spinner" *ngIf="length == null">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+
+  <ng-content select="recycler-view-error-message" *ngIf="length != null && errorState">
+  </ng-content>
+
+  <ng-content select="recycler-view-empty-placeholder" *ngIf="length != null && length == 0"></ng-content>
+
+  <div *ngIf="length != null && length != 0" class="list-container">
+    <ng-content *ngFor="let item of getArray()" select="recycler-view-list-item"></ng-content>
+    <div class="fetching-more-items-spinner" *ngIf="isFetching">
+      <ion-spinner color="primary"></ion-spinner>
+    </div>
+  </div>
+
+  <ng-content select="ion-fab"></ng-content>
+
+</section>
