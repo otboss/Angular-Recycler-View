@@ -1,0 +1,46 @@
+<recycler-view [length]="auctions?.length" [moreItemsAvailable]="isMoreAuctionsAvailable" [errorState]="errorState"
+  (fetchMoreItems)="fetchMoreAuctions()" (resetList)="reset()">
+
+  <recycler-view-error-message *ngIf="auctions == null && errorState">
+    <div class="error-message">
+      <div>
+        <ion-icon name="cloud-offline-outline"></ion-icon>
+      </div>
+      <div class="main-error-message">
+        <span>A connection error occurred</span>
+      </div>
+      <div class="retry-text">
+        <span>(tap to retry)</span>
+      </div>
+    </div>
+  </recycler-view-error-message>
+
+  <recycler-view-empty-placeholder *ngIf="auctions != null && auctions.length == 0 && !isLoading">
+    <div class="auctions-placeholder" (click)="retry()">
+      <div>
+        <ion-icon name="help-outline"></ion-icon>
+      </div>
+      <div class="main-error-message">
+        <span>You have no auctions to display</span>
+      </div>
+      <div class="retry-text">
+        <span>(tap to refresh)</span>
+      </div>
+    </div>
+  </recycler-view-empty-placeholder>
+
+  <recycler-view-list-item *ngFor="let auction of auctions">
+    <div class="auction-list-item ion-activatable ripple-parent">
+      <app-auction-item [auction]="auction" [routerLink]="auctionDetailsRoute+'/'+auction._id"></app-auction-item>
+      <ion-ripple-effect></ion-ripple-effect>
+    </div>
+  </recycler-view-list-item>
+
+  <!-- Optional Floating Action Button -->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="onAddclick()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</recycler-view>
